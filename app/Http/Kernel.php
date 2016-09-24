@@ -3,7 +3,8 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-
+use Illuminate\Routing\Router;
+use Illuminate\Contracts\Foundation\Application;
 class Kernel extends HttpKernel
 {
     /**
@@ -35,6 +36,8 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            //\Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+            //\Tymon\JWTAuth\Middleware\RefreshToken::class
         ],
     ];
 
@@ -53,4 +56,18 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
+
+    /**
+     * Create a new HTTP kernel instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    public function __construct(Application $app, Router $router)
+    {
+        parent::__construct($app, $router);
+    }
+
+
 }
