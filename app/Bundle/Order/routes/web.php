@@ -8,6 +8,7 @@
 Route::get('order', function () {
 
 
+
     return [
         'data' => [
             ['id' => 1, 'code' => str_random()]

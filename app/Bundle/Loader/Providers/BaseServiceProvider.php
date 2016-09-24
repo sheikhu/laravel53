@@ -1,6 +1,8 @@
 <?php
 namespace App\Bundle\Loader\Providers;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -20,19 +22,29 @@ abstract class BaseServiceProvider extends ServiceProvider
     protected $devProviders = [
 
     ];
-
     protected $aliases = [];
-    protected $devAliases = [
 
+    protected $devAliases = [];
+
+    protected $middlewares = [
+        'web' => [
+            \App\Bundle\Core\Middleware\CoreChecker::class
+        ]
     ];
+
+
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
-
+        collect($this->middlewares)->each(function($item, $group) use ($router) {
+            collect($item)->each(function ($middleware) use ($router, $group) {
+                $router->pushMiddlewareToGroup($group, $middleware);
+            });
+        });
     }
 
     /**
@@ -45,6 +57,7 @@ abstract class BaseServiceProvider extends ServiceProvider
         $this->registerProviders();
 
         $this->registerAliases();
+
 
     }
 
