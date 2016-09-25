@@ -78,7 +78,7 @@ abstract class BaseServiceProvider extends ServiceProvider
 
             $this->publishes([
                 $file->getPathname() => config_path($file->getBasename())
-            ]);
+            ], $this->getModuleNameToLower());
         }
 
     }
@@ -190,6 +190,11 @@ abstract class BaseServiceProvider extends ServiceProvider
     }
 
     protected abstract function getModuleName();
+
+    protected function getModuleNameToLower()
+    {
+        return Str::lower($this->getModuleName());
+    }
 
     /**
      * @return \Iterator|\Symfony\Component\Finder\SplFileInfo[]

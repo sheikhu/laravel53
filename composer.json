@@ -14,7 +14,9 @@
         "league/fractal": "^0.14.0",
         "tymon/jwt-auth": "^0.5.9",
         "fzaninotto/faker": "^1.6",
-        "laravel/socialite": "^2.0"
+        "laravel/socialite": "^2.0",
+        "laravel/scout": "^1.1",
+        "tamayo/laravel-scout-elastic": "^1.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

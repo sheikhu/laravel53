@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Bundle\Core\CoreServiceProvider;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Scout\ScoutServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->register(ScoutServiceProvider::class);
     }
 }

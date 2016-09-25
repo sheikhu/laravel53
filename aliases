@@ -1,4 +1,4 @@
 alias behat="./vendor/bin/behat"
 alias la5="php artisan"
-alias laradock="docker-compose up -d redis nginx mariadb phpmyadmin mailcatcher"
+alias laradock="docker-compose up -d redis nginx mariadb phpmyadmin mailcatcher elasticsearch"
 alias laradockssh="docker-compose exec workspace bash"

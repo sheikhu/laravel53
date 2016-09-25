@@ -26,10 +26,6 @@ class CoreServiceProvider extends BaseServiceProvider
         return 'Core';
     }
 
-    protected function getModuleNameToLower()
-    {
-        return Str::lower($this->getModuleName());
-    }
 
     public function provides()
     {

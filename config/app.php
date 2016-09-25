@@ -178,6 +178,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\BundleServiceProvider::class,
+        \ScoutEngines\Elasticsearch\ElasticsearchProvider::class
+        //\Laravel\Scout\ScoutServiceProvider::class
 
     ],
 
