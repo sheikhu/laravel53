@@ -4,6 +4,7 @@ namespace App\Bundle\Core;
 
 use App\Bundle\Core\Providers\RouteServiceProvider;
 use App\Bundle\Loader\Providers\BaseServiceProvider;
+use Illuminate\Support\Str;
 
 class CoreServiceProvider extends BaseServiceProvider
 {
@@ -24,4 +25,16 @@ class CoreServiceProvider extends BaseServiceProvider
     {
         return 'Core';
     }
+
+    protected function getModuleNameToLower()
+    {
+        return Str::lower($this->getModuleName());
+    }
+
+    public function provides()
+    {
+        return [$this->getModuleNameToLower()];
+    }
+
+
 }

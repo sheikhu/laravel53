@@ -2,9 +2,12 @@
 namespace App\Bundle\Loader\Providers;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Created by PhpStorm.
@@ -45,7 +48,7 @@ abstract class BaseServiceProvider extends ServiceProvider
 
     protected $middlewares = [
         'web' => [
-            \App\Bundle\Core\Middleware\CoreChecker::class
+            \App\Bundle\Core\Http\Middleware\CoreChecker::class
         ],
         'api' => [
 
@@ -60,11 +63,24 @@ abstract class BaseServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
+
+        $this->registerConfiguration();
+
         collect($this->middlewares)->each(function($item, $group) use ($router) {
             collect($item)->each(function ($middleware) use ($router, $group) {
                 $router->pushMiddlewareToGroup($group, $middleware);
             });
         });
+
+        $files = $this->getConfigFiles();
+
+        foreach ($files as $file) {
+
+            $this->publishes([
+                $file->getPathname() => config_path($file->getBasename())
+            ]);
+        }
+
     }
 
     /**
@@ -79,6 +95,20 @@ abstract class BaseServiceProvider extends ServiceProvider
         $this->registerAliases();
 
         $this->registerViews();
+
+        $configFiles = $this->getConfigFiles();
+
+
+        /** @var SplFileInfo $file */
+        foreach ($configFiles as $file) {
+
+            $this->mergeConfigFrom(
+                $file->getPathname(), Str::lower($file->getBasename('.php'))
+            );
+
+        }
+
+
 
     }
 
@@ -118,6 +148,16 @@ abstract class BaseServiceProvider extends ServiceProvider
         $this->loadViewsFrom($viewPath, Str::lower($this->getModuleName()));
     }
 
+    protected function registerConfiguration() {
+
+        $configFiles = Finder::create()->files()->name('*.php')
+            ->in($this->getPath().'/Resources/config')
+            ->depth(0)
+            ->getIterator();
+
+
+    }
+
     protected function addProvider($provider) {
         $this->providers[] = $provider;
     }
@@ -150,5 +190,16 @@ abstract class BaseServiceProvider extends ServiceProvider
     }
 
     protected abstract function getModuleName();
+
+    /**
+     * @return \Iterator|\Symfony\Component\Finder\SplFileInfo[]
+     */
+    private function getConfigFiles()
+    {
+        return Finder::create()->files()->name('*.php')
+            ->in($this->getPath().'/Resources/config')
+            ->depth(0)
+            ->getIterator();
+    }
 
 }

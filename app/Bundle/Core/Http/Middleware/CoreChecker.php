@@ -1,5 +1,5 @@
 <?php
-namespace App\Bundle\Core\Middleware;
+namespace App\Bundle\Core\Http\Middleware;
 
 use Closure;
 
@@ -22,7 +22,8 @@ class CoreChecker
      */
     public function handle($request, Closure $next)
     {
-        debug(get_class($this));
+
+        debug(config('core'));
         return $next($request);
     }
 }

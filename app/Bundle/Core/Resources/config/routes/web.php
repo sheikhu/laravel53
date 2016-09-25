@@ -6,5 +6,8 @@
  * Time: 12:20
  */
 Route::get('core', function () {
+
+    /*Mail::to('foo@bar.baz')
+        ->queue(new \App\Bundle\Core\Mail\Welcome());*/
     return view('core::index');
 });
