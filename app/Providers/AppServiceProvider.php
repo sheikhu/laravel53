@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Bundle\Core\Providers\CoreServiceProvider;
-use Illuminate\Foundation\AliasLoader;
+use App\Bundle\Core\CoreServiceProvider;
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(CoreServiceProvider::class);
+
     }
 }

@@ -2,16 +2,14 @@
 
 namespace App\Providers;
 
-use App\Bundle\Order\Providers\OrderServiceProvider;
-use Illuminate\Support\Facades\File;
+use App\Bundle\Core\CoreServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Finder\Finder;
 
 class BundleServiceProvider extends ServiceProvider
 {
 
     protected $modules = [
-        OrderServiceProvider::class,
+        CoreServiceProvider::class
     ];
     /**
      * Bootstrap the application services.

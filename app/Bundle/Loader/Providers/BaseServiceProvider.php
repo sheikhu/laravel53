@@ -4,6 +4,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 /**
  * Created by PhpStorm.
@@ -14,21 +15,40 @@ use Illuminate\Support\ServiceProvider;
 abstract class BaseServiceProvider extends ServiceProvider
 {
 
-    protected $moduleName = 'Loader';
-
+    protected $path;
+    /**
+     * Providers
+     * @var array
+     */
     protected $providers = [
 
     ];
-    protected $devProviders = [
 
-    ];
+    /**
+     * Providers to register only in dev mode
+     * @var array
+     */
+    protected $devProviders = [];
+
+
+    /**
+     * Aliases
+     * @var array
+     */
     protected $aliases = [];
 
+    /**
+     * Aliases only in dev
+     * @var array
+     */
     protected $devAliases = [];
 
     protected $middlewares = [
         'web' => [
             \App\Bundle\Core\Middleware\CoreChecker::class
+        ],
+        'api' => [
+
         ]
     ];
 
@@ -58,6 +78,7 @@ abstract class BaseServiceProvider extends ServiceProvider
 
         $this->registerAliases();
 
+        $this->registerViews();
 
     }
 
@@ -90,8 +111,44 @@ abstract class BaseServiceProvider extends ServiceProvider
         });
     }
 
+    protected function registerViews()
+    {
+        $viewPath = $this->getPath().'/Resources/views';
+
+        $this->loadViewsFrom($viewPath, Str::lower($this->getModuleName()));
+    }
+
     protected function addProvider($provider) {
         $this->providers[] = $provider;
     }
+
+    /**
+     * Gets the Bundle namespace.
+     *
+     * @return string The Bundle namespace
+     */
+    public function getNamespace()
+    {
+        $class = get_class($this);
+
+        return substr($class, 0, strrpos($class, '\\'));
+    }
+
+    /**
+     * Gets the Bundle directory path.
+     *
+     * @return string The Bundle absolute path
+     */
+    public function getPath()
+    {
+        if (null === $this->path) {
+            $reflected = new \ReflectionObject($this);
+            return dirname($reflected->getFileName());
+        }
+
+        return $this->path;
+    }
+
+    protected abstract function getModuleName();
 
 }

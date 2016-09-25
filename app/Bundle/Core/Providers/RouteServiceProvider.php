@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
         ], function ($router) {
 
-            require app_path('Bundle/Core/routes/web.php');
+            require app_path('Bundle/Core/Resources/config/routes//web.php');
         });
     }
 
@@ -74,7 +74,7 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
             'prefix' => 'api',
         ], function ($router) {
-            require app_path('Bundle/Core/routes/api.php');
+            require app_path('Bundle/Core/Resources/config/routes/api.php');
         });
     }
 }

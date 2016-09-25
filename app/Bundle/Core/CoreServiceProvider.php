@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Bundle\Core\Providers;
+namespace App\Bundle\Core;
 
+use App\Bundle\Core\Providers\RouteServiceProvider;
 use App\Bundle\Loader\Providers\BaseServiceProvider;
 
 class CoreServiceProvider extends BaseServiceProvider
@@ -19,6 +20,8 @@ class CoreServiceProvider extends BaseServiceProvider
     ];
 
 
-
-
+    protected function getModuleName()
+    {
+        return 'Core';
+    }
 }
