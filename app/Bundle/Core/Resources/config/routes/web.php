@@ -11,6 +11,7 @@ Route::get('core', function () {
         ->queue(new \App\Bundle\Core\Mail\Welcome());*/
 
     DB::transaction(function () {
+
         \App\User::create([
             'name' => 'Sheikhu',
             'email' => 'sheikhu02@gmail.com',

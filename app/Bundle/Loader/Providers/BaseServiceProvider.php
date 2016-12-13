@@ -61,9 +61,10 @@ abstract class BaseServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-
+        $router = $this->app['router'];
+        
         $this->registerConfiguration();
 
         collect($this->middlewares)->each(function($item, $group) use ($router) {

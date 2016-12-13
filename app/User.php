@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Scout\Searchable;
+
 
 class User extends Authenticatable
 {
-    use Notifiable, Searchable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -28,8 +28,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $dates = [
+        'created_at', 'updated_at'
+    ];
+
     public function searchableAs()
     {
         return 'users';
+    }
+
+    public function toSearchableArray()
+    {
+        $array = collect($this->toArray());
+
+        $foo = collect($this->dates)->each(function ($field) use ($array) {
+
+            $array->offsetSet($field, $this->getAttribute($field)->toIso8601String());
+        });
+
+        return $array->toArray();
     }
 }
